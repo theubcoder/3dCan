@@ -48,6 +48,15 @@ body {
   animation: float 4s ease-in-out infinite;
 }
 
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
 .animate-fadeIn {
   animation: fadeIn 1s ease-out;
 }
@@ -83,6 +92,15 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
 }
 
 @keyframes explode {

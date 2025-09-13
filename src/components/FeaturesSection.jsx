@@ -1,159 +1,121 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function FeaturesSection() {
   const sectionRef = useRef();
-  const cardsRef = useRef([]);
-  const [particles, setParticles] = useState([]);
+  const timelineRef = useRef();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Generate particles on client side only
-    const particleArray = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      delay: Math.random() * 5,
-      duration: 10 + Math.random() * 10
-    }));
-    setParticles(particleArray);
-
-    // Stagger card animations
-    cardsRef.current.forEach((card, index) => {
-      gsap.from(card, {
-        y: 100,
-        opacity: 0,
-        rotation: 5,
-        duration: 1,
-        delay: index * 0.2,
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
-        }
-      });
+    // Timeline scroll animation
+    gsap.from(timelineRef.current.children, {
+      x: -100,
+      opacity: 0,
+      stagger: 0.3,
+      duration: 1,
+      scrollTrigger: {
+        trigger: timelineRef.current,
+        start: "top 80%",
+        end: "top 30%",
+        scrub: 1,
+      }
     });
 
     return () => ScrollTrigger.getAll().forEach(st => st.kill());
   }, []);
 
-  const features = [
-    {
-      title: "THE FORMULA",
-      subtitle: "Secret Recipe",
-      description: "A closely guarded secret known by fewer than 10 people worldwide",
-      visual: "🧪",
-      color: "from-red-900 to-red-600"
-    },
-    {
-      title: "THE TASTE",
-      subtitle: "Unmistakable",
-      description: "The perfect balance of sweetness and fizz that defines refreshment",
-      visual: "✨",
-      color: "from-red-600 to-orange-600"
-    },
-    {
-      title: "THE MOMENT",
-      subtitle: "Timeless",
-      description: "Every sip creates a memory that lasts a lifetime",
-      visual: "🎬",
-      color: "from-orange-600 to-red-900"
-    }
+  const timeline = [
+    { year: "1886", event: "Born in Atlanta", description: "Dr. John S. Pemberton creates the original formula" },
+    { year: "1892", event: "The Coca-Cola Company", description: "Asa Griggs Candler establishes the company" },
+    { year: "1915", event: "Iconic Bottle", description: "The contour bottle design is introduced" },
+    { year: "1955", event: "First Cans", description: "Coca-Cola begins selling in cans" },
+    { year: "1985", event: "Space Pioneer", description: "First soft drink consumed in space" },
+    { year: "TODAY", event: "Global Icon", description: "Enjoyed in over 200 countries worldwide" }
   ];
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen w-full bg-black overflow-hidden py-20">
-      {/* Cinematic background with moving particles */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-red-950/10 to-black" />
-        
-        {/* Animated particles - only render on client */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute w-1 h-1 bg-red-500 rounded-full animate-float"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              animationDelay: `${particle.delay}s`,
-              animationDuration: `${particle.duration}s`
-            }}
-          />
-        ))}
+    <section ref={sectionRef} className="relative min-h-screen w-full overflow-hidden">
+      {/* Dynamic gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-red-950 to-black">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(220,38,38,0.1),transparent_50%)]" />
+      </div>
+
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-600/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-red-800/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 container mx-auto px-8">
-        {/* Epic title */}
+      <div className="relative z-10 container mx-auto px-8 py-20">
+        {/* Title */}
         <div className="text-center mb-20">
-          <h2 className="text-7xl md:text-9xl font-bold text-white mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-600">
-              EXPERIENCE
+          <h2 className="text-6xl md:text-8xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-red-500 via-white to-red-500 bg-clip-text text-transparent">
+              HISTORY IN EVERY SIP
             </span>
           </h2>
-          <p className="text-2xl text-gray-400 uppercase tracking-[0.5em]">
-            The Elements of Perfection
+          <p className="text-xl text-gray-400 uppercase tracking-widest">
+            A Journey Through Time
           </p>
         </div>
 
-        {/* Feature cards - Movie poster style */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              ref={el => cardsRef.current[index] = el}
-              className="relative group cursor-pointer"
-            >
-              {/* Card with dramatic lighting */}
-              <div className={`relative h-[500px] rounded-lg overflow-hidden bg-gradient-to-b ${feature.color} p-1`}>
-                <div className="absolute inset-0 bg-black/80 group-hover:bg-black/60 transition-all duration-500" />
-                
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
-                  {/* Visual element */}
-                  <div className="text-8xl mb-4 transform group-hover:scale-110 transition-transform duration-500">
-                    {feature.visual}
-                  </div>
-                  
-                  {/* Text content */}
-                  <div>
-                    <h3 className="text-4xl font-bold mb-2 tracking-wider">
-                      {feature.title}
-                    </h3>
-                    <p className="text-xl text-red-400 mb-4">
-                      {feature.subtitle}
-                    </p>
-                    <p className="text-gray-300 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                  
-                  {/* Dramatic line */}
-                  <div className="h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent" />
-                </div>
-                
-                {/* Hover effect - glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-t from-red-600/30 to-transparent" />
+        {/* Timeline */}
+        <div ref={timelineRef} className="max-w-5xl mx-auto">
+          {timeline.map((item, index) => (
+            <div key={index} className="flex items-center mb-12 group">
+              {/* Year bubble */}
+              <div className="flex-shrink-0 w-32 text-right pr-8">
+                <div className="text-3xl font-bold text-red-600 group-hover:text-red-400 transition-colors">
+                  {item.year}
                 </div>
               </div>
-              
-              {/* Shadow effect */}
-              <div className="absolute -bottom-4 left-4 right-4 h-20 bg-red-900/20 blur-2xl rounded-full" />
+
+              {/* Timeline line and dot */}
+              <div className="flex-shrink-0 w-12 flex flex-col items-center">
+                <div className="w-4 h-4 bg-red-600 rounded-full ring-4 ring-red-600/30 group-hover:ring-8 transition-all" />
+                {index < timeline.length - 1 && (
+                  <div className="w-0.5 h-24 bg-red-600/30 mt-2" />
+                )}
+              </div>
+
+              {/* Event card */}
+              <div className="flex-grow pl-8">
+                <div className="bg-black/50 backdrop-blur-sm border border-red-900/30 rounded-lg p-6 group-hover:border-red-600/50 transition-all">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {item.event}
+                  </h3>
+                  <p className="text-gray-400">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Bottom decoration */}
+        <div className="mt-20 flex justify-center">
+          <div className="flex gap-4">
+            <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
+        </div>
       </div>
 
-      {/* Cinematic vignette */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-50" />
+      {/* Bottom wave transition */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg className="w-full" height="100" viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <path
+            d="M0,50 C360,100 720,0 1440,50 L1440,100 L0,100 Z"
+            fill="rgba(0,0,0,0.5)"
+          />
+        </svg>
       </div>
     </section>
   );

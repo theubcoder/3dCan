@@ -86,14 +86,63 @@ export default function AboutSection() {
             </div>
           </div>
           
-          {/* 3D Can with dramatic lighting */}
-          <div className="h-[600px] relative">
-            <div className="absolute inset-0 bg-red-600/10 rounded-full blur-3xl" />
-            <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-              <Suspense fallback={null}>
-                <StableCanComponent />
-              </Suspense>
-            </Canvas>
+          {/* Animated visual element */}
+          <div className="h-[600px] relative flex items-center justify-center">
+            <div className="absolute inset-0 bg-red-600/10 rounded-full blur-3xl animate-pulse" />
+
+            {/* Animated Coca-Cola bottle cap design */}
+            <div className="relative">
+              <svg viewBox="0 0 300 300" className="w-80 h-80 animate-spin-slow">
+                <defs>
+                  <radialGradient id="capGradient">
+                    <stop offset="0%" stopColor="#ff0000" />
+                    <stop offset="100%" stopColor="#cc0000" />
+                  </radialGradient>
+                </defs>
+
+                {/* Bottle cap ridges */}
+                {[...Array(24)].map((_, i) => (
+                  <rect
+                    key={i}
+                    x="145"
+                    y="20"
+                    width="10"
+                    height="40"
+                    fill="url(#capGradient)"
+                    transform={`rotate(${i * 15} 150 150)`}
+                    opacity="0.9"
+                  />
+                ))}
+
+                {/* Center circle */}
+                <circle cx="150" cy="150" r="100" fill="#cc0000" />
+                <circle cx="150" cy="150" r="90" fill="none" stroke="white" strokeWidth="2" opacity="0.3" />
+
+                {/* Coca-Cola text */}
+                <text x="150" y="140" fontFamily="Arial Black" fontSize="28" fill="white" textAnchor="middle" fontWeight="bold">
+                  Coca-Cola
+                </text>
+                <text x="150" y="170" fontFamily="Arial" fontSize="14" fill="white" textAnchor="middle">
+                  Original Taste
+                </text>
+              </svg>
+
+              {/* Floating particles */}
+              <div className="absolute inset-0">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-2 h-2 bg-red-500 rounded-full animate-float"
+                    style={{
+                      top: `${(i * 15 + 10) % 100}%`,
+                      left: `${(i * 17 + 20) % 100}%`,
+                      animationDelay: `${i * 0.5}s`,
+                      animationDuration: `${3 + i * 0.3}s`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

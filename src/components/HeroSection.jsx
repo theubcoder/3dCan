@@ -8,7 +8,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden" style={{
-      background: 'linear-gradient(90deg, #0ac5b2 0%, #46a758 100%)'
+      background: 'radial-gradient(circle at 50% 50%, #2a0707 0%, #000000 100%)'
     }}>
 
 

@@ -73,13 +73,17 @@ export default function ScrollSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden -mt-1" style={{
-      background: 'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)',
+    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden" style={{
       zIndex: 1
     }}>
+      {/* Background that starts below the wave */}
+      <div className="absolute inset-0 top-[120px]" style={{
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)'
+      }} />
+
       {/* Professional vector wave border */}
-      <div ref={borderRef} className="absolute -top-1 left-0 right-0 z-30">
-        <svg className="w-full" height="80" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <div ref={borderRef} className="absolute top-0 left-0 right-0 z-30">
+        <svg className="w-full" height="120" viewBox="0 0 1440 120" preserveAspectRatio="none">
           <defs>
             <linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#F40009" stopOpacity="1" />
@@ -92,11 +96,11 @@ export default function ScrollSection() {
           </defs>
           <path
             className="wave-segment"
-            d="M0,40
+            d="M0,0 L0,40
                C240,40 240,80 480,80
                C720,80 720,40 960,40
                C1200,40 1200,80 1440,80
-               L1440,120 L0,120 Z"
+               L1440,120 L1440,0 Z"
             fill="url(#waveGrad)"
             filter="url(#shadow)"
           />
@@ -114,36 +118,45 @@ export default function ScrollSection() {
         </svg>
       </div>
 
-      {/* 3D Can moved right */}
-      <div className="absolute inset-0 flex items-center justify-end pr-32">
-        <div className="w-[300px] h-[300px]">
-          <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-            <Suspense fallback={null}>
-              <StableCanComponent />
-            </Suspense>
-          </Canvas>
+      {/* Animated background circles */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-red-800/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-red-700/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
+      {/* Center content with better layout */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        <div className="text-center max-w-4xl px-8">
+          <h2 ref={textRef1} className="text-7xl md:text-9xl font-black mb-6">
+            <span className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-transparent">
+              TASTE
+            </span>
+          </h2>
+          <h2 ref={textRef2} className="text-6xl md:text-8xl font-bold text-white mb-8">
+            THE LEGEND
+          </h2>
+          <p ref={textRef3} className="text-2xl md:text-3xl text-gray-300 font-light">
+            Since 1886
+          </p>
+
+          {/* Animated line decoration */}
+          <div className="mt-12 flex justify-center gap-2">
+            <div className="w-20 h-1 bg-red-600 animate-pulse" />
+            <div className="w-20 h-1 bg-red-500 animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="w-20 h-1 bg-red-400 animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
         </div>
       </div>
 
-      {/* Cinematic text overlays */}
-      <div className="absolute inset-0 flex flex-col justify-center items-start pl-40 z-20">
-        <h2 ref={textRef1} className="text-6xl md:text-8xl font-bold text-white mb-4 drop-shadow-2xl">
-          PURE
-        </h2>
-        <h2 ref={textRef2} className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent mb-4 drop-shadow-2xl">
-          REFRESHMENT
-        </h2>
-        <p ref={textRef3} className="text-xl md:text-2xl text-white/90 max-w-md drop-shadow-xl">
-          Experience the iconic taste that has defined generations
-        </p>
-      </div>
-
-      {/* Frost/Ice particles effect */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-50">
-        <div className="snowflake animate-snow1">❄</div>
-        <div className="snowflake animate-snow3">❆</div>
-        <div className="snowflake animate-snow5">❅</div>
-        <div className="snowflake animate-snow7">❄</div>
+      {/* Floating brand elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 text-red-600/20 text-9xl font-black transform rotate-12 animate-float">
+          ®
+        </div>
+        <div className="absolute bottom-20 right-20 text-red-600/20 text-9xl font-black transform -rotate-12 animate-float" style={{ animationDelay: '2s' }}>
+          ™
+        </div>
       </div>
     </section>
   );

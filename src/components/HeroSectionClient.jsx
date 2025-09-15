@@ -96,7 +96,7 @@ export default function HeroSectionClient() {
 
       {/* Snowfall effect */}
       {!isTransitioning && (
-        <div className={`absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-1000 ${showCocaCola ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="snowflake animate-snow1">❄</div>
           <div className="snowflake animate-snow2">❅</div>
           <div className="snowflake animate-snow3">❆</div>

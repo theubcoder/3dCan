@@ -3,9 +3,9 @@
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { useEffect, useState } from 'react';
 
-export default function HeroCanComponent() {
+export default function HeroCanComponent({ modelPath = '/models/cocacola/scene.glb', customRotationSpeed = 0 }) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const gltf = useGLTF('/models/cocacola/scene.glb');
+  const gltf = useGLTF(modelPath);
 
   useEffect(() => {
     if (gltf.scene) {
@@ -33,7 +33,7 @@ export default function HeroCanComponent() {
         enablePan={false}
         enableRotate={true}
         autoRotate={true}
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={customRotationSpeed || 5}
         rotateSpeed={2}
         minPolarAngle={Math.PI / 2}
         maxPolarAngle={Math.PI / 2}
@@ -52,3 +52,4 @@ export default function HeroCanComponent() {
 }
 
 useGLTF.preload('/models/cocacola/scene.glb');
+useGLTF.preload('/models/cocacola/scene2.glb');

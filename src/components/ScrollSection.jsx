@@ -76,10 +76,7 @@ export default function ScrollSection() {
     <section ref={sectionRef} className="relative h-screen w-full overflow-hidden" style={{
       zIndex: 1
     }}>
-      {/* Background that starts below the wave */}
-      <div className="absolute inset-0 top-[120px]" style={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 50%, #1a1a1a 100%)'
-      }} />
+     
 
       {/* Professional vector wave border */}
       <div ref={borderRef} className="absolute top-0 left-0 right-0 z-30">
